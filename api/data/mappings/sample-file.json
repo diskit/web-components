@@ -1,0 +1,14 @@
+{
+  "request": {
+    "urlPath": "/file",
+    "method": "GET"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/octet-stream",
+      "Content-Disposition": "attachement; filename=sample.csv"
+    },
+    "bodyFileName": "sample.csv"
+  }
+}
