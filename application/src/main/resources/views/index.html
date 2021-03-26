@@ -2,11 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8" />
-  <script th:src="${scriptLocation}" type="text/javascript"></script>
+  <script th:src="${scriptLocation}" type="module"></script>
 </head>
 <body>
 <p>
   Hello <span th:text="${name}">World</span>
 </p>
+<app-root message="aaaaa"></app-root>
 </body>
 </html>
