@@ -1,15 +1,32 @@
 package app
 
-import io.jooby.Kooby
-import io.jooby.ModelAndView
-import io.jooby.TraceHandler
-import io.jooby.runApp
+import io.jooby.*
 import io.jooby.thymeleaf.ThymeleafModule
+
+
+class TokenStore {
+  private val values: MutableSet<String> = mutableSetOf("preset")
+
+  fun add(token: String) {
+    values.add(token)
+  }
+
+  fun contains(token: String?) = values.contains(token)
+}
+
+val store = TokenStore()
 
 class App: Kooby({
 
   install(ThymeleafModule())
   val storage = TokenStorage()
+
+
+  before {
+    ctx.requestPath.takeIf { it.startsWith("/resources/") }
+      ?.takeUnless { store.contains(ctx.query("token").valueOrNull()) }
+      ?.let { ctx.send(StatusCode.UNAUTHORIZED) }
+  }
 
   get("/") {
     val token = Token.generate()
@@ -30,3 +47,4 @@ class App: Kooby({
 fun main(args: Array<String>) {
   runApp(args, App::class)
 }
+

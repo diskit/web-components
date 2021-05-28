@@ -15,9 +15,9 @@
     <!-- Startup class -->
     <application.class>app.AppKt</application.class>
 
-    <jooby.version>2.9.5</jooby.version>
+    <jooby.version>2.9.6</jooby.version>
 
-    <kotlin.version>1.4.21</kotlin.version>
+    <kotlin.version>1.5.0</kotlin.version>
     <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
@@ -39,6 +39,7 @@
     <dependency>
       <groupId>io.jooby</groupId>
       <artifactId>jooby-jwt</artifactId>
+      <version>${jooby.version}</version>
     </dependency>
 
     <dependency>
