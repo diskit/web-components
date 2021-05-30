@@ -6,7 +6,7 @@ class TokenStorage {
 
     private val storage: MutableSet<Token> = mutableSetOf()
 
-    fun isExist(token: Token) = storage.contains(token)
+    fun contains(token: Token) = storage.contains(token)
 
     fun store(token: Token) = storage.add(token)
 }

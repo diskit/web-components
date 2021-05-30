@@ -3,46 +3,28 @@ package app
 import io.jooby.*
 import io.jooby.thymeleaf.ThymeleafModule
 
-
-class TokenStore {
-  private val values: MutableSet<String> = mutableSetOf("preset")
-
-  fun add(token: String) {
-    values.add(token)
-  }
-
-  fun contains(token: String?) = values.contains(token)
-}
-
-val store = TokenStore()
-
 class App: Kooby({
 
   install(ThymeleafModule())
   val storage = TokenStorage()
 
-
-  before {
-    ctx.requestPath.takeIf { it.startsWith("/resources/") }
-      ?.takeUnless { store.contains(ctx.query("token").valueOrNull()) }
-      ?.let { ctx.send(StatusCode.UNAUTHORIZED) }
-  }
-
-  get("/") {
-    val token = Token.generate()
-    storage.store(token)
-    val scriptLocation =
-      "${environment.config.getString("lib.components.endpoint")}?${environment.config.getString("lib.components.accessKey")}=${token.value}"
-
-    ModelAndView("index.html")
-      .put("scriptLocation", scriptLocation)
-      .put("styleLocation", environment.config.getString("lib.style.endpoint"))
-      .put("name", "hoge")
-  }
+  before(TokenValidator(storage))
+  mount(Index(storage))
   mount(System())
   assets("/resources/*", "statics")
-  decorator(TraceHandler())
 })
+
+class TokenValidator(private val storage: TokenStorage): Route.Before {
+
+  override fun apply(ctx: Context) {
+    ctx.requestPath.takeIf { it.startsWith("/resources/") }
+      ?.let { ctx.query("token").valueOrNull() }
+      ?.let(::Token)
+      ?.takeUnless(storage::contains)
+      ?.let { ctx.send(StatusCode.UNAUTHORIZED) }
+  }
+}
+
 
 fun main(args: Array<String>) {
   runApp(args, App::class)
