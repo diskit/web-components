@@ -1,11 +1,14 @@
 package app
 
 import io.jooby.*
+import io.jooby.json.JacksonModule
 import io.jooby.thymeleaf.ThymeleafModule
 
 class App: Kooby({
 
   install(ThymeleafModule())
+  install(JacksonModule())
+
   val storage = TokenStorage()
   val config = ResourceConfiguration(
     environment.config.getString("lib.components.endpoint"),
