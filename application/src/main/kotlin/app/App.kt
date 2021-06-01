@@ -1,5 +1,7 @@
 package app
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import io.jooby.*
 import io.jooby.json.JacksonModule
 import io.jooby.thymeleaf.ThymeleafModule
@@ -7,7 +9,7 @@ import io.jooby.thymeleaf.ThymeleafModule
 class App: Kooby({
 
   install(ThymeleafModule())
-  install(JacksonModule())
+  install(JacksonModule(ObjectMapper().registerModule(KotlinModule())))
 
   val storage = TokenStorage()
   val config = ResourceConfiguration(
@@ -24,6 +26,7 @@ class App: Kooby({
   mount(Index(resource))
   mount(System())
   mount(Api())
+  mount(Auth(storage))
   assets("/resources/*", "statics")
 })
 

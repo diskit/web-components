@@ -6,9 +6,32 @@
   <script th:src="${scriptLocation}" type="module"></script>
 </head>
 <body>
-<p>
-  Hello <span th:text="${name}">World</span>
-</p>
+<div>
+  <input type="text" name="user">
+  <button onclick="login()">login</button>
+  <button onclick="logout()">logout</button>
+
+</div>
+<script>
+  function login() {
+    fetch('/auth', {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify({user: document.querySelector('input[name="user"]').value})
+    }).then(v => v.text())
+      .then(v => console.log(v))
+      .catch(v => alert(v));
+  }
+
+  function logout() {
+      fetch('/auth', {
+          method: 'DELETE'
+      }).then(v => console.log(v))
+      .catch(v => alert(v))
+  }
+</script>
 <app-root message="aaaaa"></app-root>
 </body>
 </html>
