@@ -7,24 +7,59 @@ class App: Kooby({
 
   install(ThymeleafModule())
   val storage = TokenStorage()
+  val config = ResourceConfiguration(
+    environment.config.getString("lib.components.endpoint"),
+    environment.config.getString("lib.components.accessKey"))
+  val resource = ComponentResource(storage, config)
 
-  before(TokenValidator(storage))
-  mount(Index(storage))
+  val converter = Converter(
+    environment.config.getString("lib.token.secret"),
+    environment.config.getString("lib.token.issuer")
+  )
+  decorator(ResourceHandler(storage, converter))
+  before(CredentialHandler(converter))
+  mount(Index(resource))
   mount(System())
+  mount(Api())
   assets("/resources/*", "statics")
 })
 
-class TokenValidator(private val storage: TokenStorage): Route.Before {
+class ResourceHandler(private val storage: TokenStorage, private val encoder: Encoder): Route.Decorator {
 
-  override fun apply(ctx: Context) {
-    ctx.requestPath.takeIf { it.startsWith("/resources/") }
-      ?.let { ctx.query("token").valueOrNull() }
-      ?.let(::Token)
-      ?.takeUnless(storage::contains)
-      ?.let { ctx.send(StatusCode.UNAUTHORIZED) }
+  override fun apply(next: Route.Handler): Route.Handler {
+    return Route.Handler(fun(ctx: Context): Any {
+      if (!ctx.requestPath.startsWith("/resources/scripts/"))
+        return next.apply(ctx)
+      val consumer = ctx.query("token").valueOrNull()
+          ?.let(::Token)
+          ?.let { storage.find(it) }
+        ?: return ctx.send(StatusCode.UNAUTHORIZED)
+      val token = encoder.encode(consumer)
+      val result = next.apply(ctx)
+      ctx.responseCode.takeIf { it == StatusCode.OK }
+        ?.let { setJwt(ctx, token) }
+      return result
+    })
+  }
+
+  private fun setJwt(ctx: Context, token: String) {
+    Cookie("t", token)
+      .apply { isHttpOnly = true }
+      .let { ctx.setResponseCookie(it) }
   }
 }
 
+class CredentialHandler(private val decoder: Decoder): Route.Before {
+  override fun apply(ctx: Context) {
+    if (!ctx.requestPath.startsWith("/api/"))
+      return
+    ctx.cookie("t").valueOrNull()
+      ?.let { decoder.decode(it) }
+      ?.let { ctx.setUser(it) }
+      ?: ctx.send(StatusCode.UNAUTHORIZED)
+  }
+
+}
 
 fun main(args: Array<String>) {
   runApp(args, App::class)

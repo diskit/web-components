@@ -13,22 +13,18 @@ class System: Kooby({
 
 class Api: Kooby({
     path("/api") {
-        path("/v1") {
-            get("/") {
-
-            }
+        get("/me") {
+            val user = ctx.getUser<Credential>()!!
+            user
         }
     }
 })
 
-class Index(private val storage: TokenStorage): Kooby({
+class Index(private val resource: ComponentResource): Kooby({
     get("/") {
-        val scriptLocation = Token.generate()
-            .also(storage::store)
-            .let { "${environment.config.getString("lib.components.endpoint")}?${environment.config.getString("lib.components.accessKey")}=${it.value}" }
 
         ModelAndView("index.html")
-            .put("scriptLocation", scriptLocation)
+            .put("scriptLocation", resource.path(Credential("sample-app", "100223")))
             .put("styleLocation", environment.config.getString("lib.style.endpoint"))
             .put("name", "hoge")
     }
