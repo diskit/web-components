@@ -14,20 +14,24 @@
 </div>
 <script>
   function login() {
-    fetch('/auth', {
+    fetch('/signIn', {
         method: 'POST',
         headers: {
             'content-type': 'application/json'
         },
         body: JSON.stringify({user: document.querySelector('input[name="user"]').value})
     }).then(v => v.text())
-      .then(v => console.log(v))
-      .catch(v => alert(v));
+      .then(v => notify(v))
+      .catch(v => console.error(v));
+  }
+
+  function notify(json) {
+      window.postMessage(JSON.stringify(json), new URL(location.href).origin)
   }
 
   function logout() {
-      fetch('/auth', {
-          method: 'DELETE'
+      fetch('/signOut', {
+          method: 'POST'
       }).then(v => console.log(v))
       .catch(v => alert(v))
   }

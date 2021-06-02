@@ -10,3 +10,8 @@ class AppElement extends HTMLElement {
 
 customElements.define("app-root", AppElement);
 
+window.addEventListener('message', event => {
+  const data = JSON.parse(event.data);
+  console.log(data);
+}, false)
+

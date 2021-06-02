@@ -26,7 +26,7 @@ class App: Kooby({
   mount(Index(resource))
   mount(System())
   mount(Api())
-  mount(Auth(storage))
+  mount(SignIn(storage))
   assets("/resources/*", "statics")
 })
 

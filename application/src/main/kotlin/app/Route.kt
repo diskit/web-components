@@ -20,16 +20,18 @@ class Api: Kooby({
     }
 })
 
-class Auth(val tokenStorage: TokenStorage): Kooby({
-    path("/auth") {
+class SignIn(val tokenStorage: TokenStorage): Kooby({
+    path("/signIn") {
         post("") {
             ctx.body(SignInJson::class.java)
                 .let { Credential("sample-app", it.user)}
                 .let { token -> Token.generate().also { tokenStorage.store(it, token)} }
                 .let { TokenJson(it.value) }
         }
-        delete("") {
-            println("delete")
+    }
+    path("/signOut") {
+        post("") {
+            println("signOut")
         }
     }
 })
