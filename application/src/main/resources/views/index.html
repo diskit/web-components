@@ -20,19 +20,19 @@
             'content-type': 'application/json'
         },
         body: JSON.stringify({user: document.querySelector('input[name="user"]').value})
-    }).then(v => v.text())
-      .then(v => notify(v))
+    }).then(v => v.json())
+      .then(v => notify({ action: 'signIn', token: v.token }))
       .catch(v => console.error(v));
   }
 
-  function notify(json) {
-      window.postMessage(JSON.stringify(json), new URL(location.href).origin)
+  function notify(data) {
+      window.postMessage(JSON.stringify(data), new URL(location.href).origin)
   }
 
   function logout() {
       fetch('/signOut', {
           method: 'POST'
-      }).then(v => console.log(v))
+      }).then(_ => notify({action: 'signOut'}))
       .catch(v => alert(v))
   }
 </script>

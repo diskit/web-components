@@ -59,3 +59,9 @@ class Converter(secret: String, private val issuer: String): Decoder, Encoder {
             null
         }
 }
+
+fun main() {
+    val v =
+        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzYW1wbGUtYXBwIiwidXNlciI6IjEyMzQ1IiwiY29uc3VtZXIiOiJzYW1wbGUtYXBwIn0.V6Q4jG5HGZU2Vi1Rr2q5eNcHht8YiURMdiEoQgv1pBU"
+    println(Converter("eijozjijfexceseijopzojveescsds", "sample-app").decode(v))
+}

@@ -1,7 +1,6 @@
 package app
 
-import io.jooby.Kooby
-import io.jooby.ModelAndView
+import io.jooby.*
 
 class System: Kooby({
     path("/systems") {
@@ -20,7 +19,7 @@ class Api: Kooby({
     }
 })
 
-class SignIn(val tokenStorage: TokenStorage): Kooby({
+class SignIn(private val tokenStorage: TokenStorage): Kooby({
     path("/signIn") {
         post("") {
             ctx.body(SignInJson::class.java)
@@ -34,6 +33,27 @@ class SignIn(val tokenStorage: TokenStorage): Kooby({
             println("signOut")
         }
     }
+})
+
+class Auth(private val storage: TokenStorage, private val encoder: Encoder): Kooby({
+  path("/auth") {
+      post("") {
+          ctx.body(TokenJson::class.java).token
+              .let { storage.find(Token(it)) }
+              ?.let { encoder.encode(it) }
+              ?.let { Cookie("t", it) }
+              ?.also { it.isHttpOnly = true }
+              ?.let { ctx.setResponseCookie(it) }
+              ?.let { emptyMap<String, Any>() }
+              ?: ctx.send(StatusCode.BAD_REQUEST)
+      }
+      delete("") {
+          Cookie("t", encoder.encode(Credential.anonymous("sample-app")))
+              .also { it.isHttpOnly = true }
+              .let { ctx.setResponseCookie(it) }
+              .let { emptyMap<String, Any>() }
+      }
+  }
 })
 
 data class SignInJson(val user: String)
