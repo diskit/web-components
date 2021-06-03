@@ -10,6 +10,31 @@ class AppElement extends HTMLElement {
 
 customElements.define("app-root", AppElement);
 
+class UserElement extends HTMLElement {
+  constructor() {
+    super();
+    let shadowRoot = this.attachShadow({mode: "open"});
+    let e = document.createElement('div');
+    shadowRoot.appendChild(e);
+    window.addEventListener('tokenrefresh', () => {
+      this.find();
+    }, false)
+  }
+
+  find() {
+    fetch('/api/me')
+        .then(v => v.json())
+        .then(v => this.apply(v.name))
+        .catch(v => this.apply('anonymous'));
+  }
+
+  apply(name) {
+    this.shadowRoot.querySelector('div').textContent = name
+  }
+}
+
+customElements.define("app-user", UserElement);
+
 window.addEventListener('message', event => {
   const u = new URL(location.href).origin;
   if (event.origin !== u) {
@@ -37,11 +62,15 @@ function refreshToken(data) {
       'content-type': 'application/json'
     },
     body: JSON.stringify({token: data.token})
-  }).catch(v => console.error(v));
+  })
+      .then(() => window.dispatchEvent(new CustomEvent('tokenrefresh')))
+      .catch(v => console.error(v));
 }
 
 function revokeToken(data) {
   fetch('/auth', {
     method: 'DELETE'
-  }).catch(v => console.error(v));
+  })
+    .then(() => window.dispatchEvent(new CustomEvent('tokenrefresh')))
+    .catch(v => console.error(v));
 }

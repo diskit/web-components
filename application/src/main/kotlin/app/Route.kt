@@ -13,11 +13,14 @@ class System: Kooby({
 class Api: Kooby({
     path("/api") {
         get("/me") {
-            val user = ctx.getUser<Credential>()!!
-            user
+            ctx.getUser<Credential>()!!.user
+                ?.let { UserJson(it, "name${it}") }
+                ?: ctx.send(StatusCode.NOT_FOUND)
         }
     }
 })
+
+data class UserJson(val id: String, val name: String)
 
 class SignIn(private val tokenStorage: TokenStorage): Kooby({
     path("/signIn") {
