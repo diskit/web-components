@@ -9,6 +9,8 @@ services:
     - /
 - name: api
   url: http://host.docker.internal:8082
+  plugins:
+  - name: access-control
   routes:
   - name: api
     paths:

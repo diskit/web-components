@@ -9,4 +9,4 @@ docker run --rm -d \
   -v $PWD/kong.conf:/etc/kong/kong.conf \
   -p 8080:8000 \
   --name kong-gateway \
-  kong:2.4.0-ubuntu
+  diskit/gateway
