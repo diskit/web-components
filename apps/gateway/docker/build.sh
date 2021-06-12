@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 
-cp -fR ../plugin .
+cp -fR ../plugins .
 
 docker build -t diskit/gateway .
 
-rm -fr plugin
+rm -fr plugins
