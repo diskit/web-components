@@ -18,7 +18,7 @@ class App: Kooby({
     val converter = Converter(UUID.randomUUID().toString(), "sample")
     mount(TokenRouter(storage))
     mount(CredentialRouter(storage, converter))
-    mount(Auth())
+    mount(Auth(converter))
 })
 
 fun main(args: Array<String>) {

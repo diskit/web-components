@@ -11,17 +11,17 @@ interface Decoder {
     fun decode(value: String): Credential?
 }
 
-class Converter(private val secret: String, private val issuer: String): Encoder, Decoder {
+class Converter(secret: String, private val issuer: String): Encoder, Decoder {
 
     private val algorithm = Algorithm.HMAC256(secret)
     private val verifier = JWT.require(algorithm).withIssuer(issuer).build()
 
     override fun encode(credential: Credential): String {
-        val withClaim = JWT.create()
+        val jwt = JWT.create()
             .withIssuer(issuer)
             .withClaim("consumer", credential.consumer)
-        credential.user?.let { withClaim.withClaim("user", it) }
-        return withClaim.sign(algorithm)
+        credential.user?.let { jwt.withClaim("user", it) }
+        return jwt.sign(algorithm)
     }
 
     override fun decode(value: String): Credential? {
