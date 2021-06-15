@@ -1,12 +1,10 @@
 _format_version: "1.1"
 
 services:
-- name: web
+- name: app
   url: http://host.docker.internal:8081
-  plugins:
-  - name: token-upgrader
   routes:
-  - name: web
+  - name: app
     paths:
     - /
 - name: api
@@ -23,3 +21,11 @@ services:
   - name: auth
     paths:
     - /auth
+- name: scripts
+  url: http://host.docker.internal:8084
+  plugins:
+  - name: token-upgrader
+  routes:
+  - name: scripts
+    paths:
+    - /scripts
