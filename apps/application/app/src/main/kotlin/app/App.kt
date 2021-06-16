@@ -22,20 +22,27 @@ class App: Kooby({
     val resourceEndpoint = environment.config.getString("resource.endpoint")
 
     get("") {
-        val token = HttpRequest.newBuilder(URI.create(authEndpoint))
-            .POST(HttpRequest.BodyPublishers.ofString("", Charset.forName("UTF-8")))
+        val token = HttpRequest.newBuilder(URI.create("$authEndpoint/token"))
+            .POST(HttpRequest.BodyPublishers.ofString(mapper.writeValueAsString(TokenRequestJson.anonymous()), Charset.forName("UTF-8")))
             .header("content-type", "application/json")
             .build()
             .let { httpClient.send(it, HttpResponse.BodyHandlers.ofString()) }
             .let { it.body() }
             .let { mapper.readValue<TokenResponseJson>(it) }
-
+            .also { println(it) }
 
         ModelAndView("index.html")
             .put("scriptLocation", "$resourceEndpoint?token=${token.token}")
     }
 })
 
+data class TokenRequestJson(val consumer: String, val user: String?) {
+    companion object {
+        fun anonymous(): TokenRequestJson {
+            return TokenRequestJson("sample-app", null)
+        }
+    }
+}
 data class TokenResponseJson(val token: String)
 
 fun main(args: Array<String>) {

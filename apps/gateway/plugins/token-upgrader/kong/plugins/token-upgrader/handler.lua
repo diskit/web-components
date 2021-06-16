@@ -13,6 +13,10 @@ end
 
 function plugin:access(plugin_conf)
   local token = kong.request.get_query_arg("token")
+  if not(token) then
+    return
+  end
+
   local client = http.new()
   local res, err = client:request_uri(auth_endpoint .. "/credentials/" .. token, {
     method = "GET",

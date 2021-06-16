@@ -14,19 +14,19 @@ export default {
         ...(process.versions.pnp ? { tsc: 'yarn pnpify tsc' } : {}),
       },
     ],
-    [
-      '@snowpack/plugin-webpack', {
-        outputPattern: {
-          js: "scripts/app.js",
-          css: "styles/app.css",
-        },
-        extendConfig: (config)=> {
-          delete config.optimization.splitChunks;
-          delete config.optimization.runtimeChunk;
-          return config;
-        },
-      }
-    ]
+    // [
+    //   '@snowpack/plugin-webpack', {
+    //     outputPattern: {
+    //       js: "scripts/app.js",
+    //       css: "styles/app.css",
+    //     },
+    //     extendConfig: (config)=> {
+    //       delete config.optimization.splitChunks;
+    //       delete config.optimization.runtimeChunk;
+    //       return config;
+    //     },
+    //   }
+    // ]
   ],
   routes: [
     /* Enable an SPA Fallback in development: */
@@ -43,6 +43,6 @@ export default {
     /* ... */
   },
   buildOptions: {
-    /* ... */
+    metaUrlPath: "/scripts/_snowpack"
   },
 };
