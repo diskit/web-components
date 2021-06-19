@@ -1,7 +1,7 @@
 package server
 
 import (
-	"bff/handler"
+	"bff/di"
 
 	"github.com/gin-gonic/gin"
 )
@@ -18,7 +18,7 @@ func NewRouter() *gin.Engine {
 func system(router *gin.Engine) {
 	systemGroup := router.Group("system")
 	{
-		system := new(handler.SystemHandler)
+		system := di.InitSystemHandler()
 		systemGroup.GET("/ping", system.Ping)
 	}
 }
@@ -26,7 +26,7 @@ func system(router *gin.Engine) {
 func user(router *gin.Engine) {
 	userGroup := router.Group("users")
 	{
-		user := new(handler.UserHandler)
+		user := di.InitUserHandler()
 		userGroup.GET("/:id", user.GetUser)
 	}
 }

@@ -2,5 +2,5 @@
 run:
 	go run main.go
 
-dpes:
+deps:
 	go mod download
