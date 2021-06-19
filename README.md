@@ -1,8 +1,8 @@
 # web-components
 
-This project aims to validate the implementation of encapsulated tags based on web componens
+This project aims to try the implementation of encapsulated tags based on web componens
 
-### validation list
+### list
 
 - Implementation of the web component by lit
 - Identify the user
