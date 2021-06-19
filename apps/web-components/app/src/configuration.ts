@@ -1,0 +1,1 @@
+export const serverHost = import.meta.env.SNOWPACK_PUBLIC_API_ENDPOINT;

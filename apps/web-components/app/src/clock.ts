@@ -1,5 +1,5 @@
 import { html, LitElement } from "lit";
-import {property, customElement, state} from 'lit/decorators.js';
+import { customElement, state} from 'lit/decorators.js';
 
 @customElement("app-clock")
 export class ClockElement extends LitElement {
