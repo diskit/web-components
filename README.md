@@ -1,4 +1,4 @@
-# micro-frontends
+# web-components
 
 This project aims to validate the implementation of encapsulated tags based on web componens
 
