@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-api
+  namespace: web-components
+  labels:
+    app: user-api
+    version: blue
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-api
+      namespace: web-components
+      version: blue
+  template:
+    metadata:
+      labels:
+        app: user-api
+        namespace: web-components
+        version: blue
+    spec:
+      containers:
+      - name: user-api
+        image: diskit/user-api
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
+
