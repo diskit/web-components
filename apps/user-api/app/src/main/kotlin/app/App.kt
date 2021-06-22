@@ -16,6 +16,13 @@ class App: Kooby({
             UserResponseJson(id, "name")
         }
     }
+
+    path("/systems") {
+        get("/ping") {
+            "pong"
+        }
+    }
+
 })
 
 data class UserResponseJson(val id: String, val name:String)
