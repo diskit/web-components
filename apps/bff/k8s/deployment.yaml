@@ -21,7 +21,7 @@ spec:
         version: blue
     spec:
       containers:
-      - name: nginx
+      - name: bff
         image: diskit/bff
         imagePullPolicy: Never
         ports:
