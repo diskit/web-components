@@ -5,11 +5,12 @@ metadata:
 build:
   local:
     push: false
+    useBuildkit: true
   artifacts:
   - image: diskit/auth-api
-    context: docker
+    context: .
     docker:
-      dockerfile: Dockerfile
+      dockerfile: docker/Dockerfile
 deploy:
   kubectl:
     manifests:

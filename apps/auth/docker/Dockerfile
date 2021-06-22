@@ -2,7 +2,8 @@
 
 FROM maven:3.8.1-openjdk-15-slim as build
 WORKDIR /work
-COPY app/src app/pom.xml ./
+COPY app/src /work/src
+COPY app/pom.xml /work/pom.xml
 RUN --mount=type=cache,target=/root/.m2 mvn clean package
 
 FROM openjdk:15-jdk-slim
