@@ -4,3 +4,6 @@ run:
 
 deps:
 	go mod download
+
+clean:
+	go clean
