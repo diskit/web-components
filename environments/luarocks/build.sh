@@ -1,3 +1,3 @@
 #! /usr/bin/env bash
 
-docker build --rm -t diskit/lua-alpine:5.3 .
+docker build -t diskit/lua-alpine:5.3 .
