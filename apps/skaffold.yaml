@@ -5,3 +5,4 @@ requires:
   - path: bff/skaffold.yaml
   - path: user-api/skaffold.yaml
   - path: auth/skaffold.yaml
+  - path: web-components/skaffold.yaml
