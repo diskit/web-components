@@ -1,0 +1,23 @@
+apiVersion: skaffold/v2beta17
+kind: Config
+metadata:
+  name: bff
+build:
+  local:
+    push: false
+  artifacts:
+  - image: diskit/bff
+    context: .
+    docker:
+      dockerfile: docker/Dockerfile
+deploy:
+  kubectl:
+    manifests:
+    - k8s/deployment.yaml
+    - k8s/service.yaml
+portForward:
+  - resourceType: Service
+    resourceName: bff-svc
+    namespace: web-components
+    port: 8080
+    localPort: 18080
