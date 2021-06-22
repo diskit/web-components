@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gateway-config
+  namespace: web-components
+data:
+  kong.yml: |-
+    _format_version: "1.1"
+    services:
+    - name: api
+      url: http://bff-svc:8080
+      plugins:
+      - name: access-control
+      routes:
+      - name: api
+        paths:
+        - /api
+    - name: auth
+      url: http://auth-api-svc:8083
+      routes:
+      - name: auth
+        paths:
+        - /auth
+    - name: scripts
+      url: http://components-svc:80
+      plugins:
+      - name: token-upgrader
+      routes:
+      - name: scripts
+        paths:
+        - /scripts
