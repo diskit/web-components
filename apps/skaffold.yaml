@@ -1,5 +1,7 @@
 apiVersion: skaffold/v2beta17
 kind: Config
 requires:
+  - path: gateway/skaffold.yaml
   - path: bff/skaffold.yaml
   - path: user-api/skaffold.yaml
+  - path: auth/skaffold.yaml
