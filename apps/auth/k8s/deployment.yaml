@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-api
+  namespace: web-components
+  labels:
+    app: auth-api
+    version: blue
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-api
+      namespace: web-components
+      version: blue
+  template:
+    metadata:
+      labels:
+        app: auth-api
+        namespace: web-components
+        version: blue
+    spec:
+      containers:
+      - name: auth-api
+        image: diskit/auth-api
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
+

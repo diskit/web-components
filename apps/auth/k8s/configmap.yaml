@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: auth-api-confing
+  namespace: web-components
+data:
+  application.conf: |-
+    server.port=8083
