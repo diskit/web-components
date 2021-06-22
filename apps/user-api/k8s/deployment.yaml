@@ -24,6 +24,14 @@ spec:
       - name: user-api
         image: diskit/user-api
         imagePullPolicy: Never
+        volumeMounts:
+        - name: conf
+          mountPath: "/work/conf"
+          readOnly: true
         ports:
         - containerPort: 8080
+      volumes:
+      - name: conf
+        configMap:
+          name: user-api-confing
 
