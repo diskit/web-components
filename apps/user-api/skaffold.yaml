@@ -5,6 +5,7 @@ metadata:
 build:
   local:
     push: false
+    useBuildkit: true
   artifacts:
   - image: diskit/user-api
     context: .
@@ -15,6 +16,7 @@ deploy:
     manifests:
     - k8s/deployment.yaml
     - k8s/service.yaml
+    - k8s/configmap.yaml
 portForward:
   - resourceType: Service
     resourceName: user-api-svc
