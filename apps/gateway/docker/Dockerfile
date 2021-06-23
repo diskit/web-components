@@ -28,6 +28,7 @@ FROM kong:2.4.0-alpine
 
 USER root
 
+RUN apk update && apk add curl net-tools
 RUN luarocks install lua-resty-http && luarocks install luajson
 
 COPY --from=builder /app/plugins/access-control/kong-plugin-access-control-0.1.0-1.all.rock /tmp
