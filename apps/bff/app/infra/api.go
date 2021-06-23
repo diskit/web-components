@@ -16,8 +16,14 @@ func NewApi() Api {
 
 func (a Api) GetUser(id string) map[string]interface{} {
 	path := fmt.Sprintf("%s/users/%s", config.GetConfig().UserApi.Endpoint, id)
-	req, _ := http.NewRequest(http.MethodGet, path, nil)
-	value, _ := doRequest(req)
+	req, err := http.NewRequest(http.MethodGet, path, nil)
+	if err != nil {
+		return map[string]interface{}{}
+	}
+	value, err := doRequest(req)
+	if err != nil {
+		return map[string]interface{}{}
+	}
 	return value
 }
 

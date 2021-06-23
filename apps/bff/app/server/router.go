@@ -16,7 +16,7 @@ func NewRouter() *gin.Engine {
 }
 
 func system(router *gin.Engine) {
-	systemGroup := router.Group("system")
+	systemGroup := router.Group("systems")
 	{
 		system := di.InitSystemHandler()
 		systemGroup.GET("/ping", system.Ping)

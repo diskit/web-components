@@ -1,5 +1,7 @@
 package config
 
+import "github.com/kelseyhightower/envconfig"
+
 type Config struct {
 	UserApi UserApiConfig
 }
@@ -11,10 +13,11 @@ type UserApiConfig struct {
 var config *Config
 
 func InitConfig() {
+	var user UserApiConfig
+	envconfig.Process("USER_API", &user)
+
 	config = &Config{
-		UserApi: UserApiConfig{
-			Endpoint: "http://localhost:8081",
-		},
+		UserApi: user,
 	}
 }
 
