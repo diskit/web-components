@@ -16,3 +16,9 @@ deploy:
     manifests:
     - k8s/deployment.yaml
     - k8s/service.yaml
+portForward:
+  - namespace: web-components
+    resourceType: Service
+    resourceName: auth-api-svc
+    port: 8080
+    localPort: 18080
