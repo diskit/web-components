@@ -4,11 +4,12 @@ metadata:
   name: gateway-config
   namespace: web-components
 data:
-  kong.yml: |-
+  kong.yml: |+
     _format_version: "1.1"
+
     services:
     - name: api
-      url: http://bff-svc:8080
+      url: http://bff-svc.web-components.svc.cluster.local:8080
       plugins:
       - name: access-control
       routes:
@@ -16,13 +17,13 @@ data:
         paths:
         - /api
     - name: auth
-      url: http://auth-api-svc:8083
+      url: http://auth-api-svc.web-components.svc.cluster.local:8080
       routes:
       - name: auth
         paths:
         - /auth
     - name: scripts
-      url: http://components-svc:80
+      url: http://components-svc.web-components.svc.cluster.local:80
       plugins:
       - name: token-upgrader
       routes:
