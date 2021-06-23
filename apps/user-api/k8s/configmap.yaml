@@ -5,4 +5,3 @@ metadata:
   namespace: web-components
 data:
   application.conf: |-
-    server.port=8083
