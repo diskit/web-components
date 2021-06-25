@@ -10,8 +10,8 @@ import (
 
 type Api struct{}
 
-func NewApi() Api {
-	return Api{}
+func NewApi() *Api {
+	return &Api{}
 }
 
 func (a Api) GetUser(id string) map[string]interface{} {

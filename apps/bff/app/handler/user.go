@@ -10,8 +10,8 @@ type UserHandler struct {
 	usecase usecase.UserUsecase
 }
 
-func NewUserHandler(usecase usecase.UserUsecase) UserHandler {
-	return UserHandler{usecase}
+func NewUserHandler(usecase usecase.UserUsecase) *UserHandler {
+	return &UserHandler{usecase}
 }
 
 func (h UserHandler) GetUser(c *gin.Context) {

@@ -3,10 +3,10 @@ package usecase
 import "bff/infra"
 
 type UserUsecase struct {
-	api infra.Api
+	api *infra.Api
 }
 
-func NewUserUsecase(api infra.Api) UserUsecase {
+func NewUserUsecase(api *infra.Api) UserUsecase {
 	return UserUsecase{api}
 }
 

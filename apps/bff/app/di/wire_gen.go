@@ -13,21 +13,14 @@ import (
 
 // Injectors from wire.go:
 
-func InitUserUsecase() usecase.UserUsecase {
-	api := infra.NewApi()
-	userUsecase := usecase.NewUserUsecase(api)
-	return userUsecase
-}
-
-func InitUserHandler() handler.UserHandler {
+func InitUserHandler() *handler.UserHandler {
 	api := infra.NewApi()
 	userUsecase := usecase.NewUserUsecase(api)
 	userHandler := handler.NewUserHandler(userUsecase)
 	return userHandler
 }
 
-// wire.go:
-
-func InitSystemHandler() handler.SystemHandler {
-	return handler.SystemHandler{}
+func InitSystemHandler() *handler.SystemHandler {
+	systemHandler := handler.NewSystemHandler()
+	return systemHandler
 }

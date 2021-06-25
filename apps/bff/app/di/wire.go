@@ -1,4 +1,4 @@
-// +build wireinject
+//+build wireinject
 
 package di
 
@@ -10,11 +10,12 @@ import (
 	"github.com/google/wire"
 )
 
-func InitUserHandler() handler.UserHandler {
+func InitUserHandler() *handler.UserHandler {
 	wire.Build(handler.NewUserHandler, infra.NewApi, usecase.NewUserUsecase)
-	return handler.UserHandler{}
+	return nil
 }
 
-func InitSystemHandler() handler.SystemHandler {
-	return handler.SystemHandler{}
+func InitSystemHandler() *handler.SystemHandler {
+	wire.Build(handler.NewSystemHandler)
+	return nil
 }
