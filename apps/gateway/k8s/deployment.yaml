@@ -28,6 +28,8 @@ spec:
           value: "/etc/kong-nginx/kong.yml"
         - name: KONG_DATABASE
           value: "off"
+        - name: AUTH_ENDPOINT
+          value: "http://auth-api-svc.web-components.svc.cluster.local:8080"
         imagePullPolicy: Never
         volumeMounts:
         - name: config

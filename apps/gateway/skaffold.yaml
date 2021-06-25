@@ -6,7 +6,6 @@ build:
   local:
     push: false
     useBuildkit: true
-    useDockerCLI: true
   artifacts:
   - image: diskit/gateway
     context: .
@@ -18,3 +17,9 @@ deploy:
     - k8s/configmap.yaml
     - k8s/deployment.yaml
     - k8s/service.yaml
+portForward:
+  - namespace: web-components
+    resourceType: Service
+    resourceName: gateway-svc
+    port: 8000
+    localPort: 18000
