@@ -1,12 +1,14 @@
 FROM node:lts-alpine as build
 WORKDIR /work
 
-COPY ./app/src /work/src
-COPY ./app/public /work/public
-COPY ./app/types /work/types
-COPY ./app/*.* /work/
+COPY ./app/package.json ./app/yarn.lock ./
+RUN yarn
 
-RUN yarn 
+COPY ./app/src ./src
+COPY ./app/public ./public
+COPY ./app/types ./types
+COPY ./app/*.* ./
+
 RUN yarn build
 
 FROM nginx:latest
